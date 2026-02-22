@@ -1804,8 +1804,26 @@ const cars = [
 
 const WIKI_API = "https://en.wikipedia.org/w/api.php";
 const COMMONS_API = "https://commons.wikimedia.org/w/api.php";
-const DEFAULT_CAR_IMAGE =
-  "https://images.unsplash.com/photo-1492144534655-ae79c964c9d7?auto=format&fit=crop&w=1600&q=80";
+const LOADING_CAR_IMAGE =
+  "data:image/svg+xml;utf8," +
+  encodeURIComponent(
+    "<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1200 750'>" +
+      "<rect width='1200' height='750' fill='#101010'/>" +
+      "<rect x='30' y='30' width='1140' height='690' rx='26' fill='none' stroke='#2a2a2a' stroke-width='6'/>" +
+      "<circle cx='600' cy='310' r='58' fill='none' stroke='#ff1a1a' stroke-width='12' stroke-dasharray='260 120'/>" +
+      "<text x='600' y='445' text-anchor='middle' fill='#f2f2f2' font-size='50' font-family='Poppins,Arial,sans-serif'>Loading image...</text>" +
+    "</svg>"
+  );
+const IMAGE_UNAVAILABLE =
+  "data:image/svg+xml;utf8," +
+  encodeURIComponent(
+    "<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1200 750'>" +
+      "<rect width='1200' height='750' fill='#111111'/>" +
+      "<rect x='30' y='30' width='1140' height='690' rx='26' fill='none' stroke='#3a3a3a' stroke-width='6'/>" +
+      "<path d='M260 500 L420 360 L560 470 L710 320 L940 500' fill='none' stroke='#ff1a1a' stroke-width='18' stroke-linecap='round' stroke-linejoin='round'/>" +
+      "<text x='600' y='600' text-anchor='middle' fill='#f2f2f2' font-size='48' font-family='Poppins,Arial,sans-serif'>Image unavailable</text>" +
+    "</svg>"
+  );
 const IMAGE_OVERRIDES = {
   "Ferrari SF90 Stradale":
     "https://commons.wikimedia.org/wiki/Special:FilePath/Ferrari%20SF90%20Stradale%204.jpg",
@@ -1925,7 +1943,7 @@ function createCard(car) {
   article.setAttribute("role", "link");
   article.setAttribute("aria-label", `Open full profile for ${car.brand} ${car.model}`);
 
-  const imageUrl = car.image || DEFAULT_CAR_IMAGE;
+  const imageUrl = car.image || LOADING_CAR_IMAGE;
 
   article.innerHTML = `
     <img class="car-image" src="${imageUrl}" alt="${car.brand} ${car.model}" loading="lazy" />
@@ -1946,7 +1964,7 @@ function createCard(car) {
 
   const image = article.querySelector(".car-image");
   image.addEventListener("error", () => {
-    image.src = DEFAULT_CAR_IMAGE;
+    image.src = IMAGE_UNAVAILABLE;
   });
 
   article.addEventListener("click", () => {
@@ -2017,7 +2035,7 @@ function renderCompareCards(carA, carB) {
   compareResult.innerHTML = `
     <div class="compare-grid">
       <article class="compare-car-card">
-        <img class="compare-image" src="${carA.image || DEFAULT_CAR_IMAGE}" alt="${getCarLabel(
+        <img class="compare-image" src="${carA.image || LOADING_CAR_IMAGE}" alt="${getCarLabel(
     carA
   )}" loading="lazy" />
         <p class="compare-brand">${carA.brand}</p>
@@ -2031,7 +2049,7 @@ function renderCompareCards(carA, carB) {
         </ul>
       </article>
       <article class="compare-car-card">
-        <img class="compare-image" src="${carB.image || DEFAULT_CAR_IMAGE}" alt="${getCarLabel(
+        <img class="compare-image" src="${carB.image || LOADING_CAR_IMAGE}" alt="${getCarLabel(
     carB
   )}" loading="lazy" />
         <p class="compare-brand">${carB.brand}</p>
@@ -2049,7 +2067,7 @@ function renderCompareCards(carA, carB) {
 
   compareResult.querySelectorAll(".compare-image").forEach((image) => {
     image.addEventListener("error", () => {
-      image.src = DEFAULT_CAR_IMAGE;
+      image.src = IMAGE_UNAVAILABLE;
     });
   });
 }
@@ -2204,6 +2222,10 @@ async function hydrateCarImages() {
       }
     } catch (_error) {
       // Ignore image lookup failures and keep fallback image.
+    }
+
+    if (!car.image) {
+      car.image = IMAGE_UNAVAILABLE;
     }
   }
 
