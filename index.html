@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Velvet Torque | Car Encyclopedia</title>
+    <meta
+      name="description"
+      content="A premium car encyclopedia featuring performance specs, pricing, and model comparisons."
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Lexend:wght@600;700&family=Montserrat:wght@500;600;700;800&family=Poppins:wght@300;400;500;600&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <div class="site-background"></div>
+    <div id="pageLoader" class="page-loader" aria-live="polite">
+      <p class="loader-text">Velvet Torque</p>
+    </div>
+
+    <header class="navbar">
+      <a href="#" class="logo" aria-label="Velvet Torque Home">
+        <span class="logo-mark" aria-hidden="true">
+          <svg class="logo-icon" viewBox="0 0 120 120" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M18 18L44 102L63 62" />
+            <path d="M33 18L52 84L63 62" />
+            <path d="M58 26H108L99 48H78" />
+            <path d="M74 48V102H100V58" />
+            <path d="M63 62L48 102" />
+          </svg>
+        </span>
+        <span class="logo-text">Velvet Torque</span>
+      </a>
+
+      <nav class="nav-links" aria-label="Main navigation">
+        <a href="#home">Home</a>
+        <a href="#brands">Brands</a>
+        <a href="#compare">Compare</a>
+      </nav>
+    </header>
+
+    <main>
+      <section class="hero" id="home">
+        <p class="hero-tag">Premium Automotive Archive</p>
+        <h1>Discover Performance Icons in a Curated Car Encyclopedia</h1>
+        <p>
+          Explore engineering masterpieces, compare elite specs, and browse a
+          modern catalog of the world’s most desirable machines.
+        </p>
+      </section>
+
+      <section class="brand-directory" id="brands">
+        <div class="section-header">
+          <h2>Brands</h2>
+          <p>Explore every marque in the encyclopedia.</p>
+        </div>
+        <div id="brandGrid" class="brand-grid" aria-live="polite"></div>
+      </section>
+
+      <section class="catalog" id="cars">
+        <div class="catalog-header">
+          <h2>Featured Cars</h2>
+          <div class="search-wrap">
+            <input
+              type="search"
+              id="searchInput"
+              placeholder="Search by brand or model..."
+              aria-label="Search by brand or model"
+            />
+          </div>
+        </div>
+
+        <div id="carGrid" class="car-grid" aria-live="polite"></div>
+        <p id="emptyState" class="empty-state" hidden>
+          No matching cars found. Try another brand or model.
+        </p>
+      </section>
+
+      <section class="compare-placeholder" id="compare">
+        <h2>Compare Two Cars</h2>
+        <p>Choose any two cars for a quick side-by-side performance breakdown.</p>
+        <div class="compare-controls">
+          <label class="compare-field" for="compareCarA">
+            <span>Car A</span>
+            <select id="compareCarA" aria-label="Select first car"></select>
+          </label>
+          <label class="compare-field" for="compareCarB">
+            <span>Car B</span>
+            <select id="compareCarB" aria-label="Select second car"></select>
+          </label>
+          <button id="compareBtn" type="button" class="compare-btn">Compare</button>
+        </div>
+        <div id="compareResult" class="compare-result" aria-live="polite">
+          <p class="compare-empty">Pick two cars to compare.</p>
+        </div>
+      </section>
+    </main>
+
+    <script src="script.js"></script>
+  </body>
+</html>
