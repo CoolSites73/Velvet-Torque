@@ -1,7 +1,25 @@
 const WIKI_API = "https://en.wikipedia.org/w/api.php";
 const COMMONS_API = "https://commons.wikimedia.org/w/api.php";
-const DEFAULT_CAR_IMAGE =
-  "https://images.unsplash.com/photo-1492144534655-ae79c964c9d7?auto=format&fit=crop&w=1600&q=80";
+const LOADING_CAR_IMAGE =
+  "data:image/svg+xml;utf8," +
+  encodeURIComponent(
+    "<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1200 750'>" +
+      "<rect width='1200' height='750' fill='#101010'/>" +
+      "<rect x='30' y='30' width='1140' height='690' rx='26' fill='none' stroke='#2a2a2a' stroke-width='6'/>" +
+      "<circle cx='600' cy='310' r='58' fill='none' stroke='#ff1a1a' stroke-width='12' stroke-dasharray='260 120'/>" +
+      "<text x='600' y='445' text-anchor='middle' fill='#f2f2f2' font-size='50' font-family='Poppins,Arial,sans-serif'>Loading image...</text>" +
+    "</svg>"
+  );
+const IMAGE_UNAVAILABLE =
+  "data:image/svg+xml;utf8," +
+  encodeURIComponent(
+    "<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1200 750'>" +
+      "<rect width='1200' height='750' fill='#111111'/>" +
+      "<rect x='30' y='30' width='1140' height='690' rx='26' fill='none' stroke='#3a3a3a' stroke-width='6'/>" +
+      "<path d='M260 500 L420 360 L560 470 L710 320 L940 500' fill='none' stroke='#ff1a1a' stroke-width='18' stroke-linecap='round' stroke-linejoin='round'/>" +
+      "<text x='600' y='600' text-anchor='middle' fill='#f2f2f2' font-size='48' font-family='Poppins,Arial,sans-serif'>Image unavailable</text>" +
+    "</svg>"
+  );
 
 const detailContainer = document.getElementById("detailContainer");
 const pageLoader = document.getElementById("pageLoader");
@@ -114,7 +132,7 @@ function renderMissingState() {
 }
 
 function renderCarDetails(car) {
-  const imageUrl = car.image || DEFAULT_CAR_IMAGE;
+  const imageUrl = car.image || LOADING_CAR_IMAGE;
 
   detailContainer.innerHTML = `
     <div class="detail-top">
@@ -161,7 +179,7 @@ function renderCarDetails(car) {
 
   const detailImage = document.getElementById("detailImage");
   detailImage.addEventListener("error", () => {
-    detailImage.src = DEFAULT_CAR_IMAGE;
+    detailImage.src = IMAGE_UNAVAILABLE;
   });
 }
 
@@ -260,6 +278,10 @@ async function hydrateDetailImage(car) {
   }
 
   if (!imageSource) {
+    const detailImage = document.getElementById("detailImage");
+    if (detailImage) {
+      detailImage.src = IMAGE_UNAVAILABLE;
+    }
     return null;
   }
 
